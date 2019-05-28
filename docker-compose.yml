@@ -1,0 +1,88 @@
+version: '2'
+
+networks:
+    schedULEnet:
+        driver: bridge
+        ipam:
+            config:
+                - subnet: 172.20.0.0/24
+                  gateway: 172.20.0.1
+
+    schedULEproxnet:
+        driver: bridge
+        ipam:
+            config:
+                - subnet: 172.21.0.0/24
+                  gateway: 172.21.0.1
+
+    schedULEbacknet:
+        driver: bridge
+        ipam:
+            config:
+                - subnet: 172.22.0.0/24
+                  gateway: 172.22.0.1
+      
+
+volumes:
+    db-data:
+        external: false
+
+services:
+
+    schedule-proxy:
+        image: nginx:latest
+        container_name: schedule-proxy
+        volumes:
+            - ./Proxy/nginx.conf:/etc/nginx/nginx.conf
+            - ./Proxy/error.log:/etc/nginx/error_log.log
+        ports:
+            - "13370:13370"
+        depends_on: 
+            - schedule-back
+        networks:
+            schedULEnet:
+                ipv4_address: 172.20.0.3
+            schedULEproxnet:
+                ipv4_address: 172.21.0.2
+
+    schedule-db:
+        build: ./Db
+        container_name: schedule-db
+        restart: always
+        ports:
+            - "3306:3306"
+        volumes:
+            - db-data:/var/lib/mysql
+        networks:
+            schedULEbacknet:
+                ipv4_address: 172.22.0.3
+
+    schedule-back:
+        build: ./Back
+        container_name: schedule-back
+        restart: on-failure
+        ports:
+            - "40000:40000"
+        depends_on:
+            - schedule-db
+        volumes:
+            - ./Back:/api
+        networks:
+            schedULEproxnet:
+                ipv4_address: 172.21.0.3
+            schedULEbacknet:
+                ipv4_address: 172.22.0.2
+      
+    schedule-front:
+        build: ./Front
+        container_name: schedule-front
+        restart: always
+        depends_on:
+            - schedule-proxy
+        ports:
+            - "80:80"
+        volumes:
+            - ./Front/dist/spa-mat:/var/www/schedULE
+        networks:
+            schedULEnet:
+                ipv4_address: 172.20.0.2

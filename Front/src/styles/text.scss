@@ -1,0 +1,59 @@
+$font-family-headings: 'Inter', Helvetica, sans-serif;
+$font-family: 'Inter', Helvetica, sans-serif;
+
+/* Tamaños de fuente */
+$font-size-small: 80%;
+$font-size: 1.6rem;
+$font-size-h1: 4.8rem;
+$font-size-h2: 3.2rem;
+$font-size-h3: 2.4rem;
+$font-size-h4: 2rem;
+$font-size-h5: 1.6rem;
+$font-size-h6: 1.4rem;
+
+/* Unidad de medida */
+$space-unit: 0.8rem;
+
+/* Espaciado */
+$space-2: $space-unit * 0.25;       //   2px
+$space-4: $space-unit * 0.5;        //   4px
+$space-8: $space-unit;              //   8px
+$space-12: $space-unit * 1.5;       //   12px
+$space-16: $space-unit * 2;         //   16px
+$space-20: $space-unit * 2.5;       //   20px
+$space-24: $space-unit * 3;         //   24px
+$space-32: $space-unit * 4;         //   32px
+$space-40: $space-unit * 5;         //   40px
+$space-48: $space-unit * 6;         //   48px
+$space-52: $space-unit * 6.5;       //   52px
+$space-84: $space-unit * 10.5;      //   84px
+
+/* Pesos */
+$font-weight-light: 200;
+$font-weight-regular: 400;
+$font-weight-bold: 600;
+$font-weight-h1: $font-weight-regular;
+$font-weight-h2: $font-weight-regular;
+$font-weight-h3: $font-weight-regular;
+$font-weight-h4: $font-weight-regular;
+$font-weight-h5: $font-weight-regular;
+$font-weight-h6: $font-weight-regular;
+$link-font-weight: $font-weight-regular;
+
+/* Alturas de subrayadao */
+$line-height: $font-size + $space-8;
+$line-height-h1: $font-size-h1 + $space-8;
+$line-height-h2: $font-size-h2 + $space-8;
+$line-height-h3: $font-size-h3 + $space-8;
+$line-height-h4: $font-size-h4 + $space-8;
+$line-height-h5: $font-size-h5 + $space-8;
+$line-height-h6: $font-size-h6 + $space-8;
+
+/* Espaciado entre letras */
+$letter-spacing: normal;
+$letter-spacing-h1: normal;
+$letter-spacing-h2: normal;
+$letter-spacing-h3: normal;
+$letter-spacing-h4: normal;
+$letter-spacing-h5: normal;
+$letter-spacing-h6: normal;

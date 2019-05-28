@@ -1,0 +1,8 @@
+#44815c -> Botones
+#22603d -> Boton en rollover
+#384047 -> Fondo toolbar, cabeceros, tarea seleccionada
+#1e272e -> Fondo contenido (kanban...)
+#2b343b -> Fondo drawer, tarea
+#c0c0c0 -> Texto 1 (Claro)
+#909090 -> Texto 2, fondo iconos (Medio)
+#696969 -> Texto 3 (Oscuro)

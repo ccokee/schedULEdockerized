@@ -1,0 +1,97 @@
+version: "2"
+
+networks:
+
+ schedULEnet:
+  driver: bridge
+  ipam:
+   config:
+     - subnet: 172.20.0.0/24
+       gateway: 172.20.0.1
+
+ schedULEproxnet:
+  driver: bridge
+  ipam:
+   config:
+     - subnet: 172.21.0.0/24
+       gateway: 172.21.0.1
+
+ schedULEbacknet:
+  driver: bridge
+  ipam:
+   config:
+     - subnet: 172.22.0.0/24
+       gateway: 172.22.0.1
+
+volumes:
+    db-data:
+        external: false
+
+services:
+    schedULE-proxy: 
+    image: nginx:latest
+    container_name: schedULE-proxy
+    volumes:
+      - ./proxy.conf:/etc/nginx/nginx.conf
+      - ./error.log:/etc/nginx/error_log.log
+    ports:
+      - 80:80
+    networks:
+        schedULEnet:
+            ipv4_address: 172.20.0.3
+        schedULEproxnet:
+            ipv4_address: 172.21.0.2
+
+    schedULE-front:
+        build:
+          dockerfile: Dockerfile
+          context: ./Front
+        restart: always
+        env_file: .env
+        depends_on:
+            - schedULE-back
+        ports:
+            - "80:80"
+        volumes:
+            - ./Front:/var/www/html
+        links:
+            - api
+        networks:
+            schedULEnet:
+                ipv4_address: 172.20.0.2
+
+    schedULE-back:
+        build:
+          dockerfile: Dockerfile
+          context: ./Back
+        restart: always
+        env_file: .env
+        depends_on:
+            - schedULE-db
+            - schedULE-proxy
+        ports:
+            - "3000:3000"
+        volumes:
+            - ./Back:/api
+        networks:
+            schedULEproxnet:
+                ipv4_address: 172.21.0.2
+            schedULEbacknet:
+                ipv4_address: 172.22.0.2
+
+    schedULE-db:
+        image: mysql:latest
+        restart: always
+        ports:
+            - "3306:3306"
+        environment:
+            MYSQL_ROOT_PASSWORD:
+            MYSQL_DATABASE:
+            MYSQL_USER:
+            MYSQL_PASSWORD:
+        volumes:
+            - db-data:/var/lib/mysql
+        networks:
+            schedULEbacknet:
+                ipv4_address: 172.22.0.3
+            
