@@ -27,8 +27,9 @@ FROM develop-stage as build-stage
 # Añadimos placeholders para el environment
 ENV BACK_HOST=$BACK_HOST_ARG \
 DATABASE_HOST=$DATABASE_HOST_ARG \
-PROXY_HOST=$PROXY_HOST_ARG
-
+PROXY_HOST=$PROXY_HOST_ARG \
+PROXY_HOST_PORT=$PROXY_HOST_PORT_ARG \
+PROXY_PORT=$PROXY_PORT_ARG
 
 # Hacemos la construccion del frontend
 RUN yarn
@@ -41,10 +42,8 @@ WORKDIR /certs
 RUN apk update && \
     apk upgrade && \
     apk add --no-cache openssl && \
-    echo "$SCHEDULECERT_PASSWORD" >> passfile.txt && \
     openssl genrsa -des3 -passout pass:SCHEDULECERT -out server.pass.key 2048 && \
     openssl rsa -passin pass:SCHEDULECERT -in server.pass.key -out server.key && \
-    rm server.pass.key && echo "removed" && rm passfile.txt && \
     openssl req -new -key server.key -out server.csr -subj "/C=SP/ST=LEON/L=LEON/O=UNILEON/OU=G13/CN=server" && \
     openssl x509 -req -days 365 -in server.csr -signkey server.key -out server.crt
 
@@ -57,8 +56,7 @@ ENV PATH /usr/local/apache2/:$PATH
 COPY --from=build-stage /app/dist/spa-mat/ /usr/local/apache2/htdocs/
 COPY --from=signing-stage /certs/* /usr/local/apache2/conf/
 
-# Copiamos la configuración del servicio al contenedor
-COPY ./schedule.conf /usr/local/apache2/conf/httpd.conf
+
 
 # Incluir todos los modulos extra de ssl
 RUN sed -i \
