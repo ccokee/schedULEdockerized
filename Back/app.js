@@ -30,6 +30,12 @@ app.use('/projects', Projects)
 app.use('/labels', Labels)
 app.use('/imgs',express.static('imgs'));
 
+app.get('/sanity/check', function(req,res){
+    console.log("coKe saluda")
+    res.setHeader('Content-Type', 'application/json')
+    res.send({ coke: "coKe says hello" })
+})
+
 sequelize.sync() 
 
 setTimeout(() => {

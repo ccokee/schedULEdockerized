@@ -92,7 +92,7 @@ services:
             - schedule-proxy
         restart: on-failure
         healthcheck:
-            test: ["CMD", "curl", "-f","--silent","--show-error", "schedule-proxy:13370"]
+            test: ["CMD", "curl", "-f", "schedule-proxy:13370/sanity/check"]
             interval: 15s
             timeout: 10s
             retries: 50
