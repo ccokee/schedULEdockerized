@@ -1,26 +1,17 @@
 ### Schedule-front: multistaged build
 
 # Añadimos palceholders de argumentos para la construccion
-ARG MYSQL_HOST_ARG
-ARG MYSQL_DATABASE_ARG
-ARG MYSQL_USER_ARG
-ARG MYSQL_PASSWORD_ARG
-ARG DATABASE_HOST_ARG
-ARG BACK_HOST_ARG
+ARG PROXY_HOST_PORT_ARG
+ARG PROXY_PORT_ARG
+ARG PROXY_HOST_ARG
 
 ## Frontend build Stage
 FROM node:current-alpine AS develop-stage
-LABEL David + Adrian + Jorge
 
 # Añadimos placeholders para el environment
 
-ENV MYSQL_HOST=$MYSQL_HOST_ARG
-ENV MYSQL_DATABASE=$MYSQL_DATABASE_ARG
-ENV MYSQL_USER=$MYSQL_USER_ARG
-ENV MYSQL_PASSWORD=$MYSQL_PASSWORD_ARG
 ENV BACK_HOST=$BACK_HOST_ARG
 ENV DATABASE_HOST=$DATABASE_HOST_ARG
-
 
 # Seteamos el workdir que vamos a usar dentro del contenedor
 WORKDIR /app
@@ -32,17 +23,12 @@ RUN yarn global add quasar-cli vue-cli
 COPY . .
 
 ## Build stage
-# Añadimos placeholders para el environment
-
-ENV MYSQL_HOST=$MYSQL_HOST_ARG \
-MYSQL_DATABASE=$MYSQL_DATABASE_ARG \
-MYSQL_USER=$MYSQL_USER_ARG \
-MYSQL_PASSWORD=$MYSQL_PASSWORD_ARG \
-BACK_HOST=$BACK_HOST_ARG \
-DATABASE_HOST=$DATABASE_HOST_ARG
-
 FROM develop-stage as build-stage
-LABEL David + Adrian + Jorge
+# Añadimos placeholders para el environment
+ENV BACK_HOST=$BACK_HOST_ARG \
+DATABASE_HOST=$DATABASE_HOST_ARG \
+PROXY_HOST=$PROXY_HOST_ARG
+
 
 # Hacemos la construccion del frontend
 RUN yarn
@@ -64,7 +50,8 @@ RUN apk update && \
 
 ## Deploy Stage
 FROM httpd:alpine AS deploy
-LABEL David + Adrian + Jorge
+
+ENV PATH /usr/local/apache2/:$PATH
 
 # Copiamos el frontend distribuible del constructor al contenedor
 COPY --from=build-stage /app/dist/spa-mat/ /usr/local/apache2/htdocs/

@@ -88,15 +88,13 @@ services:
              PROXY_PORT_ARG: ${PROXY_PORT}
              PROXY_HOST_PORT_ARG: ${PROXY_HOST_PORT}
         container_name: schedule-front
-        env_file:
-            - ./common.env
-        depends_on:
-            - schedule-proxy
         healthcheck:
-            test: ["CMD", "curl", "-f", "schedule-proxy"]
-            interval: 30s
+            test: ["CMD", "curl", "-f", "schedule-proxy:13370"]
+            interval: 1m30s
             timeout: 10s
             retries: 3
+        env_file:
+            - ./common.env
         ports:
             - "80:80"
             - "443:443"

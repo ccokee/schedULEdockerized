@@ -1,6 +1,5 @@
 # Usamos un contenedor ligero de node.
 FROM node:current-alpine
-LABEL David + Adrian + Jorge
 
 # Nos movemos a la carpeta api del contenedor
 WORKDIR /app
