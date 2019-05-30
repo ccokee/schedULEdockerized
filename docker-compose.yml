@@ -73,9 +73,9 @@ services:
             - schedule-db
         healthcheck:
             test: ["CMD", "curl", "-f", "schedule-db:3306"]
-            interval: 1m30s
+            interval: 15s
             timeout: 10s
-            retries: 3
+            retries: 50
         networks:
             - schedULEproxnet
             - schedULEbacknet
@@ -93,9 +93,9 @@ services:
         restart: on-failure
         healthcheck:
             test: ["CMD", "curl", "-f","--silent","--show-error", "schedule-proxy:13370"]
-            interval: 1m30s
+            interval: 15s
             timeout: 10s
-            retries: 3
+            retries: 50
         env_file:
             - ./common.env
         ports:
