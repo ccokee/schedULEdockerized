@@ -72,7 +72,7 @@ services:
         depends_on:
             - schedule-db
         healthcheck:
-            test: ["CMD", "curl", "-f", "${DATABASE_HOST}:3306"]
+            test: ["CMD", "curl", "-f", "schedule-db:3306"]
             interval: 1m30s
             timeout: 10s
             retries: 3
@@ -87,23 +87,18 @@ services:
              PROXY_HOST_ARG: ${PROXY_HOST}
              PROXY_PORT_ARG: ${PROXY_PORT}
              PROXY_HOST_PORT_ARG: ${PROXY_HOST_PORT}
-             APACHE_RUN_USER_ARG: ${APACHE_RUN_USER}
-             APACHE_RUN_GROUP_ARG: ${APACHE_RUN_GROUP}
-             APACHE_LOG_DIR_ARG: ${APACHE_LOG_DIR}
-             APACHE_LOCK_DIR_ARG: ${APACHE_LOCK_DIR}
-             APACHE_PID_FILE_ARG: ${APACHE_PID_FILE}
         container_name: schedule-front
         env_file:
             - ./common.env
-        restart: always
         depends_on:
             - schedule-proxy
         healthcheck:
-            test: ["CMD", "curl", "-f", "${PROXY_HOST_PORT}"]
+            test: ["CMD", "curl", "-f", "schedule-proxy"]
             interval: 30s
             timeout: 10s
             retries: 3
         ports:
             - "80:80"
+            - "443:443"
         networks:
             - schedULEnet

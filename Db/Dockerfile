@@ -1,4 +1,5 @@
 FROM mysql:latest
+LABEL David + Adrian + Jorge
 
 ARG BACK_HOST_ARG
 ARG DATABASE_HOST_ARG

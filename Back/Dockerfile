@@ -1,6 +1,6 @@
 # Usamos un contenedor ligero de node.
 FROM node:current-alpine
-LABEL Jorge Curbera <jcurbr00@estudiantes.unileon.es>
+LABEL David + Adrian + Jorge
 
 # Nos movemos a la carpeta api del contenedor
 WORKDIR /app
@@ -21,7 +21,10 @@ ENV DATABASE_HOST=$DATABASE_HOST_ARG
 COPY package*.json /app/
 
 # Instalamos las dependencias en el contenedor
-RUN npm install
+RUN apk update && \
+    apk upgrade && \
+    apk add --no-cache curl && \
+    npm install
 
 # Back pa dentro del contenedor
 COPY . /app/

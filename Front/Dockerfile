@@ -21,6 +21,7 @@ ENV MYSQL_PASSWORD=$MYSQL_PASSWORD_ARG
 ENV BACK_HOST=$BACK_HOST_ARG
 ENV DATABASE_HOST=$DATABASE_HOST_ARG
 
+
 # Seteamos el workdir que vamos a usar dentro del contenedor
 WORKDIR /app
 
@@ -49,26 +50,25 @@ RUN quasar build
 
 ## Signing stage
 FROM alpine:latest AS signing-stage
+
 WORKDIR /certs
 RUN apk update && \
     apk upgrade && \
     apk add --no-cache openssl && \
-    echo "${SCHEDULECERT_PASSWORD}" >> passfile.txt && \
-    openssl genrsa -des3 -out server.pass.key 2048 -passout file:passfile.txt && \
-    openssl rsa -in server.pass.key -out server.key -passin file:passfile.txt && \
+    echo "$SCHEDULECERT_PASSWORD" >> passfile.txt && \
+    openssl genrsa -des3 -passout pass:SCHEDULECERT -out server.pass.key 2048 && \
+    openssl rsa -passin pass:SCHEDULECERT -in server.pass.key -out server.key && \
     rm server.pass.key && echo "removed" && rm passfile.txt && \
-    ROOT_SUBJ=ROOT_SUBJ="/C=${SCHEDULECERT_COUNTRY}/ST=${SCHEDULECERT_STATE}/L=${SCHEDULECERT_LOCATION}/O=${SCHEDULECERT_ORG}/OU=${SCHEDULECERT_DEPT}/CN=${FRONT_HOST}" && \
-    openssl req -new -key server.key -out server.csr -subj "$ROOT_SUBJ" && \
-    openssl x509 -req -days ${SCHEDULECERT_DAYS} -in server.csr -signkey server.key -out server.crt
+    openssl req -new -key server.key -out server.csr -subj "/C=SP/ST=LEON/L=LEON/O=UNILEON/OU=G13/CN=server" && \
+    openssl x509 -req -days 365 -in server.csr -signkey server.key -out server.crt
 
 ## Deploy Stage
-FROM httpd:alpine AS deploy-stage
+FROM httpd:alpine AS deploy
 LABEL David + Adrian + Jorge
 
 # Copiamos el frontend distribuible del constructor al contenedor
 COPY --from=build-stage /app/dist/spa-mat/ /usr/local/apache2/htdocs/
 COPY --from=signing-stage /certs/* /usr/local/apache2/conf/
-
 
 # Copiamos la configuración del servicio al contenedor
 COPY ./schedule.conf /usr/local/apache2/conf/httpd.conf
@@ -78,4 +78,14 @@ RUN sed -i \
         -e 's/^#\(Include .*httpd-ssl.conf\)/\1/' \
         -e 's/^#\(LoadModule .*mod_ssl.so\)/\1/' \
         -e 's/^#\(LoadModule .*mod_socache_shmcb.so\)/\1/' \
-        conf/httpd.conf
+        conf/httpd.conf && \
+    apk update && \
+    apk upgrade && \
+    apk add --no-cache curl
+
+COPY --from=deploy /usr/local/bin/httpd-foreground /usr/local/bin/
+
+EXPOSE 80
+EXPOSE 443
+
+CMD ["httpd-foreground"]
