@@ -3,7 +3,7 @@
         <v-list-tile class="teamTileComponent" v-for="user in otherMembers" :key="user.id">
           <v-list-tile-avatar size="40">
               <v-img v-if="user.avatar" :src="user.avatar"/>
-              <v-img v-else :src="'../../../assets/avatar.jpg'"></v-img>
+              <v-img v-else src="statics/avatar.jpg"></v-img>
           </v-list-tile-avatar>
           <v-list-tile-content>
             <v-list-tile-title class="teamTileTitle">{{ user.username }}
@@ -63,7 +63,7 @@
         },
         methods: {
             toggleAdmin: async function(user) {
-                let response = this.$axios.post('http://process.env.PROXY_HOST_PORT/users/togglestatus', {id: user.id})
+                let response = this.$axios.post(process.env.PROXY_HOST_PORT + '/users/togglestatus', {id: user.id})
                 user.isAdmin = !user.isAdmin
             }
         }

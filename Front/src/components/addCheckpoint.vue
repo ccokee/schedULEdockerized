@@ -11,7 +11,7 @@
                         <span class="tituloToolbar">Add checkpoint</span>
                     </v-toolbar-title>
                     <v-spacer></v-spacer>
-                        <img src="../statics/favicon.png"
+                        <img src="statics/favicon.png"
                         class="logoAuth"
                     />
                 </v-toolbar>

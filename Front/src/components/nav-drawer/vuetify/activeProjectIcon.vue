@@ -3,7 +3,7 @@
         <v-list-tile>
           <v-list-tile-avatar size="50">
             <img v-if="avatar" :src="avatar">
-            <img v-else :src="'../../../assets/avatarTeam.jpg'">
+            <img v-else src="statics/avatarTeam.jpg">
           </v-list-tile-avatar>
           <v-list-tile-content>
             <v-list-tile-title>

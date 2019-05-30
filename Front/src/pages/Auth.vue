@@ -10,7 +10,7 @@
                 </v-btn><span class="tituloToolbar">AUTH</span>
                 </v-toolbar-title>
                 <v-spacer></v-spacer>
-                <img src="../statics/logo-web.png"
+                <img src="statics/logo-web.png"
                     class="logoAuth"
                 />
               </v-toolbar>
@@ -56,7 +56,7 @@ export default {
   methods: {
     ...mapMutations(['setUserData']),
     sendLogin: function () {
-      this.$axios.post('http://process.env.PROXY_HOST_PORT/users/get', {
+      this.$axios.post(process.env.PROXY_HOST_PORT + '/users/get', {
         email: this.email,
         password: this.password
       })

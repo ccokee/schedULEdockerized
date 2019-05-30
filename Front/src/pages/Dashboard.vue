@@ -85,7 +85,7 @@ export default {
         ...mapMutations('project', ['setProject']),
         loadData() {
             if (this.projectId) { 
-                this.$axios.get('http://process.env.PROXY_HOST_PORT/projects/' + this.projectId)
+                this.$axios.get(process.env.PROXY_HOST_PORT  + '/projects/' + this.projectId)
                     .then(response => {
                         this.setTasks(response.data.tasks)
                         this.setProject(response.data)

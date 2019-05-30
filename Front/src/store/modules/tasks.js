@@ -1,5 +1,4 @@
 import axios from 'axios'
-import { stat } from 'fs';
 
 export default {
   namespaced: true,
@@ -47,7 +46,7 @@ export default {
       for (let task of open) {
         if (task.status != 'open') {
           task.status = 'open'
-          axios.post('http://process.env.PROXY_HOST_PORT/tasks/update', task)
+          axios.post(process.env.PROXY_HOST_PORT + '/tasks/update', task)
         
           for(let taskGen of state.all) {
             if(taskGen.id == task.id) {
@@ -62,7 +61,7 @@ export default {
       for (let task of closed) {
         if (task.status != 'closed') {
           task.status = 'closed'
-          axios.post('http://process.env.PROXY_HOST_PORT/tasks/update', task)
+          axios.post(process.env.PROXY_HOST_PORT + '/tasks/update', task)
           
           for(let taskGen of state.all) {
             if(taskGen.id == task.id) {
@@ -77,7 +76,7 @@ export default {
       for (let task of testing) {
         if (task.status != 'testing') {
           task.status = 'testing'
-          axios.post('http://process.env.PROXY_HOST_PORT/tasks/update', task)
+          axios.post(process.env.PROXY_HOST_PORT  + '/tasks/update', task)
         
           for(let taskGen of state.all) {
             if(taskGen.id == task.id) {
@@ -92,7 +91,7 @@ export default {
       for (let task of inprogress) {
         if (task.status != 'inprogress') {
           task.status = 'inprogress'
-          axios.post('http://process.env.PROXY_HOST_PORT/tasks/update', task)
+          axios.post(process.env.PROXY_HOST_PORT + '/tasks/update', task)
         
           for(let taskGen of state.all) {
             if(taskGen.id == task.id) {
@@ -150,11 +149,12 @@ export default {
     }
   },
   actions: {
-    async loadTask ({ commit }) {
+    async loadTask ({ state, commit }) {
       try {
-        let response = await axios.get('http://process.env.PROXY_HOST_PORT/task/' + selectedTask.id)
+        let response = await axios.get(process.env.PROXY_HOST_PORT + '/tasks/' + state.selectedTask.id)
         let task = response.data
         commit('setSelectedTask', task)
+        commit('updateDataTask', task)
       }
       catch (error) {
         console.log(error)

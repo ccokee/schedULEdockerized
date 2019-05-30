@@ -66,7 +66,7 @@ export default {
     methods: {
         update(checkpoint) {
             checkpoint.status = !checkpoint.status
-            this.$axios.post('http://process.env.PROXY_HOST_PORT/tasks/checkpoints/update', checkpoint)
+            this.$axios.post(process.env.PROXY_HOST_PORT  + '/tasks/checkpoints/update', checkpoint)
         },
         deleteLabel(label, check) {
             check.labels.splice(check.labels.indexOf(label), 1)
@@ -85,7 +85,7 @@ export default {
                 position: 'top',
             })
             .then(() => {
-                this.$axios.post('http://process.env.PROXY_HOST_PORT/tasks/checkpoints/delete', {id: check.id})
+                this.$axios.post(process.env.PROXY_HOST_PORT + '/tasks/checkpoints/delete', {id: check.id})
                 this.selectedTask.checkpoints.splice(this.selectedTask.checkpoints.indexOf(check), 1)
             })
             .catch(() => {})

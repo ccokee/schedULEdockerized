@@ -47,7 +47,7 @@ export default {
     methods : {
         ...mapMutations('tasks', ['setSelectedTask']),
         goToTask () {
-            this.$axios.get('http://process.env.PROXY_HOST_PORT/tasks/' + this.task.id)
+            this.$axios.get(process.env.PROXY_HOST_PORT + '/tasks/' + this.task.id)
             .then(response => {
                 this.setSelectedTask(response.data)
                 this.$router.push('/task')

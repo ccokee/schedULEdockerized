@@ -10,7 +10,7 @@
                 </v-btn><span class="tituloToolbar">SIGN UP</span>
                 </v-toolbar-title>
                 <v-spacer></v-spacer>
-                <img src="../statics/logo-web.png"
+                <img src="statics/logo-web.png"
                     class="logoAuth"
                 />
               </v-toolbar>
@@ -59,7 +59,7 @@ export default {
           position: 'top'
         })
       } else if (this.email.includes('@') && this.email.includes('.')) {
-        this.$axios.post('http://process.env.PROXY_HOST_Port/users/add', {
+        this.$axios.post(process.env.PROXY_HOST_PORT + '/users/add', {
           username: this.username,
           email: this.email,
           password: this.password

@@ -24,7 +24,7 @@
           <v-icon size="12">edit</v-icon>
         </v-btn>
         <active-project-icon v-bind:minified="miniv" v-on:uploadavatar="editAvatar = !editAvatar"/>
-        <q-uploader class="upload-avatar" v-if="editAvatar" dark :url="'http://process.env.PROXY_HOST_PORT/users/upload'" :headers="{'Authorization': 'Bearer ' + token}"/>
+        <q-uploader class="upload-avatar" v-if="editAvatar" dark :url="process.env.PROXY_HOST_PORT  + '/users/upload'" :headers="{'Authorization': 'Bearer ' + token}"/>
         <v-divider/>
         <active-project-label-list v-on:refresh="$emit('refresh')" v-if="!miniv && $vuetify.breakpoint.mdAndUp"/>
         <v-divider class="separator"/>
@@ -77,7 +77,7 @@
       watch: {
         editAvatar: async function() {
           if (this.editAvatar == false) {
-            let url = await this.$axios.get('http://process.env.PROXY_HOST_PORT/users/avatar/' + this.username)
+            let url = await this.$axios.get(process.env.PROXY_HOST_PORT  + '/users/avatar/' + this.username)
             this.setAvatar(url.data)
           }
         }

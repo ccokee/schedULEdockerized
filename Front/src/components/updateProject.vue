@@ -11,7 +11,7 @@
                         <span class="tituloToolbar">Editar proyecto</span>
                     </v-toolbar-title>
                     <v-spacer></v-spacer>
-                        <img src="../statics/favicon.png"
+                        <img src="statics/favicon.png"
                         class="logoAuth"
                     />
                 </v-toolbar>
@@ -61,7 +61,7 @@ export default {
         }
     },
     created: function (){
-        this.$axios.get('http://process.env.PROXY_HOST_PORT/users/list')
+        this.$axios.get(process.env.PROXY_HOST_PORT + '/users/list')
         .then(response => {
             this.users = response.data
              for(let user of this.users) {

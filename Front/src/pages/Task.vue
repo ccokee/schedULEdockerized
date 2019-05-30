@@ -37,7 +37,7 @@
                         </div>
                     </v-toolbar-title>
                     <v-spacer></v-spacer>
-                        <img src="../statics/favicon.png"
+                        <img src="statics/favicon.png"
                         class="logoAuth"
                     />
                 </v-toolbar>
@@ -73,7 +73,7 @@
                                 />
                                 <br>
                                 <div style="display: flex; flex-direction: row; margin-bottom: 1vh">
-                                    <span class="dataLabel" style="width:10%">Status: </span>
+                                    <span class="dataLabel" style="width:12%">Status: </span>
                                     <span class="dataText-weight"> {{computedStatus}}</span>
                                 </div>
                                 <div style="display: flex; flex-direction: row; height: 4vh">
@@ -98,7 +98,7 @@
 
                                 <div style="display: flex; flex-direction: row">
                                     <span v-if="!editingRealWeight" class="dataLabel" style="width: 16%">Final weight:</span>
-                                    <span v-if="!editingRealWeight" class="dataText-weight" style="width: 18%"> {{computedRealWeight}}</span>
+                                    <span v-if="!editingRealWeight" class="dataText-weight" style="width: 20%"> {{computedRealWeight}}</span>
                                     <v-btn class="edit-button" depressed icon @click="editingRealWeight = !editingRealWeight">
                                         <v-icon v-if="!editingRealWeight" size="12">edit</v-icon>
                                         <v-icon v-else size="12">cancel</v-icon>
@@ -226,7 +226,7 @@ export default {
         }
     },
     methods: {
-        ...mapActions('tasks', ['loadChecklist']),
+        ...mapActions('tasks', ['loadChecklist', 'loadTask']),
         ...mapMutations('tasks', ['setSelectedTask', 'updateDataTask', 'removeTask']),
         triggerUpdateCheckpoint(checkpoint) {
             this.selectedCheckpoint = checkpoint
@@ -245,7 +245,7 @@ export default {
                 position: 'top',
             })
             .then(() => {
-                this.$axios.post('http://process.env.PROXY_HOST_PORT/tasks/delete', {id: this.selectedTask.id})
+                this.$axios.post(process.env.PROXY_HOST_PORT + '/tasks/delete', {id: this.selectedTask.id})
                 this.removeTask(this.selectedTask)
                 this.$router.push('/dashboard')
             })
@@ -305,6 +305,9 @@ export default {
                     task_id: this.selectedTask.id,
                     user_id: user.id
                 })
+            }
+            if(to_add || to_delete) {
+                this.loadTask()
             }
         },
         send: async function() {
