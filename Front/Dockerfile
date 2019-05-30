@@ -83,9 +83,9 @@ RUN sed -i \
     apk upgrade && \
     apk add --no-cache curl
 
-COPY --from=deploy /usr/local/bin/httpd-foreground /usr/local/bin/
-
 EXPOSE 80
 EXPOSE 443
+
+COPY httpd-foreground /usr/local/bin/
 
 CMD ["httpd-foreground"]
