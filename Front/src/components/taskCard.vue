@@ -67,6 +67,9 @@ export default {
 .taskCard
     min-height: 15vh
     max-height: 30vh
+    min-width: 90%
+    margin-left: auto
+    margin-right: auto
 
 .taskTitle
     font-size: 10pt
