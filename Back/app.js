@@ -31,10 +31,12 @@ app.use('/labels', Labels)
 app.use('/imgs',express.static('imgs'));
 
 app.get('/sanity/check', function(req,res){
-    console.log("coKe saluda")
     res.setHeader('Content-Type', 'application/json')
     res.send({ coke: "coKe says hello" })
 })
+
+console.log('Esperando por el contenedor de la bd');
+setTimeout(console.log.bind(null, 'Espera finalizada'), 8000);
 
 sequelize.sync() 
 
