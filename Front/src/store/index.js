@@ -18,7 +18,7 @@ export default function (/* { ssrContext } */) {
       project
     },
     state: {
-      host: process.env.PROXY_HOST_PORT,
+      host: process.env.PROXY_HOST_PORT + '/',
       token: null,
       username: null,
       email: null,
