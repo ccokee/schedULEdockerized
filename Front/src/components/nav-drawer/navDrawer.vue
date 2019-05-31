@@ -24,7 +24,7 @@
           <v-icon size="12">edit</v-icon>
         </v-btn>
         <active-project-icon v-bind:minified="miniv" v-on:uploadavatar="editAvatar = !editAvatar"/>
-        <q-uploader class="upload-avatar" v-if="editAvatar" dark :url="process.env.PROXY_HOST_PORT + '/users/upload'" :headers="{'Authorization': 'Bearer ' + token}"/>
+        <q-uploader class="upload-avatar" v-if="editAvatar" dark :url="backHost + '/users/upload'" :headers="{'Authorization': 'Bearer ' + token}"/>
         <v-divider/>
         <active-project-label-list v-on:refresh="$emit('refresh')" v-if="!miniv && $vuetify.breakpoint.mdAndUp"/>
         <v-divider class="separator"/>
@@ -71,7 +71,13 @@
         return {
           miniv: false,
           nDrawer: true,
-          editAvatar: false
+          editAvatar: false,
+          backHost: null
+        }
+      },
+      created: function() {
+        return {
+          backHost=process.env.PROXY_HOST_PORT
         }
       },
       watch: {
@@ -84,7 +90,7 @@
       },
       computed: {
         ...mapState('project', ['project']),
-        ...mapState(['isAdmin', 'username', 'token'])
+        ...mapState(['isAdmin', 'username', 'token']),
       },
       methods :{
         ...mapMutations(['setAvatar']),
