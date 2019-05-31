@@ -24,7 +24,7 @@
           <v-icon size="12">edit</v-icon>
         </v-btn>
         <active-project-icon v-bind:minified="miniv" v-on:uploadavatar="editAvatar = !editAvatar"/>
-        <q-uploader class="upload-avatar" v-if="editAvatar" dark :url="process.env.PROXY_HOST_PORT  + '/users/upload'" :headers="{'Authorization': 'Bearer ' + token}"/>
+        <q-uploader class="upload-avatar" v-if="editAvatar" dark :url="process.env.PROXY_HOST_PORT + '/users/upload'" :headers="{'Authorization': 'Bearer ' + token}"/>
         <v-divider/>
         <active-project-label-list v-on:refresh="$emit('refresh')" v-if="!miniv && $vuetify.breakpoint.mdAndUp"/>
         <v-divider class="separator"/>

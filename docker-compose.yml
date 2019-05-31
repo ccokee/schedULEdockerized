@@ -41,6 +41,8 @@ services:
         command: mysqld --default-authentication-plugin=mysql_native_password
         env_file:
             - ./common.env
+        security_opt:
+            - seccomp:unconfined
         environment:
             - MYSQL_PASSWORD=${MYSQL_PASSWORD}
             - MYSQL_USER=${MYSQL_USER}
