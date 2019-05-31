@@ -1,4 +1,8 @@
 // Configuration for your app
+const webpack = require('webpack')
+const path = require('path')
+const envparser = require('./config/envparser')
+const DotEnv = require('dotenv')
 
 module.exports = function (ctx) {
   return {
@@ -24,6 +28,7 @@ module.exports = function (ctx) {
       // gzip: true,
       // analyze: true,
       // extractCSS: false,
+      env: envparser(),
       extendWebpack (cfg) {
         cfg.module.rules.push({
           enforce: 'pre',
@@ -31,6 +36,12 @@ module.exports = function (ctx) {
           loader: 'eslint-loader',
           exclude: /node_modules/
         })
+        cfg.resolve.alias.env = path.resolve(__dirname,'config/helpers/env.js')
+        cfg.plugins.push(
+          new webpack.ProvidePlugin({
+            'env': 'env'
+          })
+        )
       }
     },
     devServer: {

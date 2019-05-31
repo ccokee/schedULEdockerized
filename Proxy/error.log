@@ -1,0 +1,1 @@
+2019/05/30 23:42:32 [error] 7#7: *223 connect() failed (111: Connection refused) while connecting to upstream, client: 192.168.48.3, server: schedule-proxy, request: "GET /sanity/check HTTP/1.1", upstream: "http://192.168.32.2:40000/sanity/check", host: "schedule-proxy:13370"

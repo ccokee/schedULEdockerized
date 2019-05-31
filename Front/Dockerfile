@@ -30,7 +30,6 @@ DATABASE_HOST=$DATABASE_HOST_ARG \
 PROXY_HOST=$PROXY_HOST_ARG \
 PROXY_HOST_PORT=$PROXY_HOST_PORT_ARG \
 PROXY_PORT=$PROXY_PORT_ARG
-
 # Hacemos la construccion del frontend
 RUN yarn
 RUN quasar build
@@ -55,8 +54,6 @@ ENV PATH /usr/local/apache2/:$PATH
 # Copiamos el frontend distribuible del constructor al contenedor
 COPY --from=build-stage /app/dist/spa-mat/ /usr/local/apache2/htdocs/
 COPY --from=signing-stage /certs/* /usr/local/apache2/conf/
-
-
 
 # Incluir todos los modulos extra de ssl
 RUN sed -i \
