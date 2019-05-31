@@ -76,9 +76,7 @@
         }
       },
       created: function() {
-        return {
-          backHost=process.env.PROXY_HOST_PORT
-        }
+          this.backHost=process.env.PROXY_HOST_PORT
       },
       watch: {
         editAvatar: async function() {
