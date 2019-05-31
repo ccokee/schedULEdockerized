@@ -1,6 +1,6 @@
 <template>
     <v-card dark ripple raised hover @click="goToTask" class="taskCard">
-        <v-card-title>
+        <v-card-title style="width: 100%">
             <span class="taskTitle">{{task.name.toUpperCase()}}</span>
         </v-card-title>
 
@@ -88,14 +88,14 @@ export default {
     max-height: 24px
 
 .lista-etiquetas
-    width: 13vw
+    width: 100%
     display: flex
     flex-direction: row
     flex-wrap: wrap
 
 .scroll-area-label
     margin-left: 5%
-    width: 16vw
+    width: 95%
     height: 7.5vh
 
 .labels-flex
