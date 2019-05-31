@@ -180,7 +180,7 @@ router.post('/upload', passport.authenticate('bearer', { session: false }), func
             }
         })
         .then(async user => {
-            user.avatar = process.env.PROXY_HOST_PORT +'/imgs/'+avatar.name+'.jpg'
+            user.avatar = 'http://localhost:40000' + '/imgs/'+avatar.name+'.jpg'
             await user.save()
             res.send('/imgs/' + avatar.name + '.jpg');
         })
