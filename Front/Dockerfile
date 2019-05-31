@@ -10,8 +10,7 @@ FROM node:current-alpine AS develop-stage
 
 # Añadimos placeholders para el environment
 
-ENV BACK_HOST=$BACK_HOST_ARG
-ENV DATABASE_HOST=$DATABASE_HOST_ARG
+ENV BACK_HOST=
 
 # Seteamos el workdir que vamos a usar dentro del contenedor
 WORKDIR /app
@@ -25,12 +24,11 @@ COPY . .
 ## Build stage
 FROM develop-stage as build-stage
 # Añadimos placeholders para el environment
-ENV BACK_HOST=$BACK_HOST_ARG \
-DATABASE_HOST=$DATABASE_HOST_ARG \
-PROXY_HOST=$PROXY_HOST_ARG \
+ENV PROXY_HOST=$PROXY_HOST_ARG \
 PROXY_HOST_PORT=$PROXY_HOST_PORT_ARG \
 PROXY_PORT=$PROXY_PORT_ARG
 # Hacemos la construccion del frontend
+COPY .env ./
 RUN yarn
 RUN quasar build
 
